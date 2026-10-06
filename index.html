@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>고장 징후를 반영한 AGV 배차</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&amp;display=swap">
+<style>
+html,body{margin:0;height:100%;background:#0B1F33;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0}
+#stage{word-break:keep-all}
+#stage *{box-sizing:border-box}
+#stage section{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden}
+#stage section[hidden]{display:none!important}
+#stage p,#stage h1,#stage h2,#stage h3,#stage ul,#stage ol,#stage table{margin:0}
+#stage ul,#stage ol{padding-left:1.2em}
+#stage hr{border:0;margin:0;height:0;align-self:stretch}
+#stage table{border-collapse:collapse}
+#stage th,#stage td{border:1px solid #D5DCE4;padding:.35em .6em;vertical-align:middle;font-weight:400}
+#stage x-icon{display:block;flex:none}
+#stage x-icon svg{display:block;width:100%;height:100%}
+#stage x-shape{display:block;flex:none}
+#stage x-shape[kind=arrow-right]{clip-path:polygon(0 30%,60% 30%,60% 0,100% 50%,60% 100%,60% 70%,0 70%)}
+#nav{position:fixed;right:16px;bottom:12px;font:14px/1 -apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#BFCBD8;opacity:.7;user-select:none}
+</style>
+</head>
+<body>
+<div id="stage">
+<section id="cover" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">소프트웨어공학 프로젝트 · 계획 발표</p>
+<div style="display:flex;flex-direction:column;gap:32px">
+<h1 style="font-size:96px;font-weight:600;line-height:1.2">고장 징후를 반영한<br>AGV 배차</h1>
+<p style="font-size:40px;line-height:1.4;color:#3B4A5A">무인 운반차의 상태 예측과 배차 실험 계획</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px">
+<hr style="border-top:1px solid #D5DCE4">
+<div style="display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:30px;color:#5B6B7B">[팀원 이름]</p>
+<p style="font-size:30px;color:#5B6B7B">2026. 10. 6.</p>
+</div>
+</div>
+</section>
+<section id="intro" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">01 배경</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.15">AGV란</h2>
+</div>
+<hr style="border-top:1px solid #D5DCE4">
+<div style="display:flex;flex-direction:row;gap:48px;align-items:center">
+<svg aria-label="통로에서 상자를 싣고 이동하는 AGV와 작업 지점, 선반을 나타낸 그림" width="880" height="440" viewBox="0 0 880 440"><rect x="0" y="0" width="880" height="440" rx="16" fill="#EDF1F5"/><rect x="40" y="344" width="800" height="4" fill="#0B1F33"/><rect x="60" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="132" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="204" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="276" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="348" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="420" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="492" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="564" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="636" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="708" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="780" y="376" width="36" height="4" fill="#9AA9B9"/><rect x="64" y="208" width="132" height="12" rx="3" fill="#0B1F33"/><rect x="76" y="220" width="108" height="124" fill="#C9D5E3"/><rect x="96" y="160" width="68" height="48" rx="4" fill="#A9C4EC" stroke="#0B1F33" stroke-width="3"/><rect x="346" y="188" width="148" height="84" rx="6" fill="#A9C4EC" stroke="#0B1F33" stroke-width="3"/><rect x="320" y="272" width="200" height="12" rx="4" fill="#0B1F33"/><rect x="300" y="284" width="240" height="48" rx="12" fill="#1F5FBF"/><circle cx="350" cy="336" r="14" fill="#0B1F33"/><circle cx="350" cy="336" r="5" fill="#EDF1F5"/><circle cx="490" cy="336" r="14" fill="#0B1F33"/><circle cx="490" cy="336" r="5" fill="#EDF1F5"/><circle cx="518" cy="308" r="7" fill="#F5B041"/><polygon points="572,300 612,300 612,288 640,308 612,328 612,316 572,316" fill="#9AA9B9"/><rect x="676" y="112" width="8" height="232" fill="#0B1F33"/><rect x="808" y="112" width="8" height="232" fill="#0B1F33"/><rect x="676" y="112" width="140" height="8" fill="#0B1F33"/><rect x="676" y="188" width="140" height="8" fill="#0B1F33"/><rect x="676" y="264" width="140" height="8" fill="#0B1F33"/><rect x="694" y="140" width="48" height="48" fill="#C9D5E3"/><rect x="752" y="152" width="44" height="36" fill="#C9D5E3"/><rect x="696" y="220" width="56" height="44" fill="#C9D5E3"/><rect x="760" y="228" width="38" height="36" fill="#C9D5E3"/><rect x="694" y="296" width="100" height="48" fill="#C9D5E3"/></svg>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:40px;font-weight:600;line-height:1.3">바닥을 다니며 물건을 나르는 무인 운반차</p>
+<ul style="font-size:30px;line-height:1.5;color:#3B4A5A">
+<li>정해진 경로나 지도를 따라 스스로 이동</li>
+<li>선반, 팔레트, 상자를 지점 사이로 운반</li>
+<li>관제 시스템이 여러 대에 작업을 배정</li>
+</ul>
+</div>
+</div>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#5B6B7B">고장 징후를 반영한 AGV 배차</p>
+<p style="font-size:24px;color:#5B6B7B">2 / 9</p>
+</div>
+</section>
+<section id="usage" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">01 배경</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.15">얼마나 쓰이는가</h2>
+</div>
+<hr style="border-top:1px solid #D5DCE4">
+<p style="font-size:40px;font-weight:600;line-height:1.3">물류센터와 공장에서 빠르게 늘고 있습니다</p>
+<div style="display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FCFDFE;padding:40px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:96px;font-weight:600;line-height:1.1;color:#1F5FBF">11.3만 대</p>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">2023년 세계 운송·물류 로봇 판매</p>
+<p style="font-size:24px;color:#5B6B7B">국제로봇연맹 집계</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FCFDFE;padding:40px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:96px;font-weight:600;line-height:1.1;color:#1F5FBF">+35%</p>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">전년 대비 판매 증가율</p>
+<p style="font-size:24px;color:#5B6B7B">국제로봇연맹 집계</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FCFDFE;padding:40px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:96px;font-weight:600;line-height:1.1;color:#1F5FBF">1천여 대</p>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">쿠팡 대구 물류센터의 AGV</p>
+<p style="font-size:24px;color:#5B6B7B">국내 보도 기준</p>
+</div>
+</div>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#5B6B7B">출처: 국제로봇연맹 World Robotics (2024), 국내 보도 (2025)</p>
+<p style="font-size:24px;color:#5B6B7B">3 / 9</p>
+</div>
+</section>
+<section id="problem" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">02 문제</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.15">지금의 배정 방식과 문제</h2>
+</div>
+<hr style="border-top:1px solid #D5DCE4">
+<div style="display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFE;padding:32px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF">배정에 쓰는 정보</p>
+<div style="display:flex;flex-direction:row;gap:16px;align-items:center"><x-icon name="Check" style="color:#1F5FBF;width:32px;height:32px"></x-icon><p style="font-size:30px;line-height:1.5">위치: 가장 가까운 로봇</p></div>
+<div style="display:flex;flex-direction:row;gap:16px;align-items:center"><x-icon name="Check" style="color:#1F5FBF;width:32px;height:32px"></x-icon><p style="font-size:30px;line-height:1.5">가용 여부: 비어 있는 로봇</p></div>
+<div style="display:flex;flex-direction:row;gap:16px;align-items:center"><x-icon name="Check" style="color:#1F5FBF;width:32px;height:32px"></x-icon><p style="font-size:30px;line-height:1.5">배터리 잔량</p></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFE;padding:32px;border:2px solid #B45309;border-radius:12px">
+<p style="font-size:24px;font-weight:600;color:#B45309">배정에 쓰지 않는 정보</p>
+<h3 style="font-size:40px;font-weight:600;line-height:1.25">고장 징후</h3>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">과열, 이상 전류 같은 신호는 정비 쪽에서만 봅니다</p>
+</div>
+</div>
+<p style="font-size:60px;font-weight:600;line-height:1.2">고장 난 뒤에는 뺀다. 고장 나기 전에는 모른다.</p>
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;flex-direction:row;gap:12px;align-items:center">
+<p style="font-size:24px;font-weight:600;text-align:center;background:#C9D5E3;color:#0B1F33;padding:14px 20px;border-radius:6px;width:112px">대기</p>
+<p style="font-size:24px;font-weight:600;text-align:center;background:#C9D5E3;color:#0B1F33;padding:14px 20px;border-radius:6px;width:112px">대기</p>
+<p style="font-size:24px;font-weight:600;text-align:center;background:#C9D5E3;color:#0B1F33;padding:14px 20px;border-radius:6px;width:112px">대기</p>
+<p style="font-size:24px;font-weight:700;text-align:center;background:#B45309;color:#FCFDFE;padding:14px 20px;border-radius:6px;width:112px">정지</p>
+<div style="flex:1;border-top:3px dashed #9AA9B9"></div>
+<x-shape kind="arrow-right" style="background:#9AA9B9;width:48px;height:24px"></x-shape>
+<p style="font-size:24px;color:#5B6B7B">진행 방향</p>
+</div>
+<div style="height:4px;background:#9AA9B9"></div>
+</div>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">통로에서 한 대가 멈추면 뒤따르던 로봇이 막히거나 돌아가야 합니다</p>
+</div>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#5B6B7B">근거: KAIST 연구 (2022, 2025), MiR Fleet 제품 설명</p>
+<p style="font-size:24px;color:#5B6B7B">4 / 9</p>
+</div>
+</section>
+<section id="prior" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">02 문제</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.15">선행 연구와 빈자리</h2>
+</div>
+<hr style="border-top:1px solid #D5DCE4">
+<table style="font-size:30px;width:100%;color:#3B4A5A;background:#FCFDFE">
+<tr style="background:#0B1F33"><th style="width:40%;text-align:left;color:#F2F5F8;font-weight:600">연구 갈래</th><th style="width:18%;text-align:left;color:#F2F5F8;font-weight:600">선행 연구</th><th style="width:42%;text-align:left;color:#F2F5F8;font-weight:600">특징</th></tr>
+<tr><td>센서로 고장 징후 예측</td><td>있음</td><td>결과를 정비 일정에 사용</td></tr>
+<tr><td>로봇 상태를 고려한 배차</td><td>있음</td><td>상태를 배터리나 가정값으로 다룸</td></tr>
+<tr style="background:#E3ECFA"><td style="color:#0B1F33">예측한 고장 징후를 배차에 연결</td><td style="color:#0B1F33">찾지 못함</td><td style="color:#0B1F33">저희가 다루는 지점</td></tr>
+</table>
+<p style="font-size:40px;font-weight:600;line-height:1.3">빈자리는 예측이 아니라 연결입니다</p>
+<p style="font-size:24px;line-height:1.5;color:#5B6B7B">선행 연구: KAIST OHT 배차 (2022, 2025) · 배터리를 고려한 로봇 일정 (2023) · 고장 감지 기반 작업 배정 (2026)</p>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#5B6B7B">‘찾지 못함’은 저희가 조사한 범위 기준</p>
+<p style="font-size:24px;color:#5B6B7B">5 / 9</p>
+</div>
+</section>
+<section id="approach" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">03 해결</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.15">우리의 접근</h2>
+</div>
+<hr style="border-top:1px solid #D5DCE4">
+<div style="display:flex;flex-direction:row;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFE;padding:36px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">STEP 1</p>
+<h3 style="font-size:40px;font-weight:600;line-height:1.25">상태 예측</h3>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">전류, 온도, 먼지 센서로 정상·관심·경고·위험을 판정합니다</p>
+</div>
+<x-shape kind="arrow-right" style="background:#9AA9B9;width:48px;height:24px;align-self:center"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFE;padding:36px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">STEP 2</p>
+<h3 style="font-size:40px;font-weight:600;line-height:1.25">배차에 반영</h3>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">위험한 AGV에는 일을 덜 주거나 미리 정비 구역으로 뺍니다</p>
+</div>
+<x-shape kind="arrow-right" style="background:#9AA9B9;width:48px;height:24px;align-self:center"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFE;padding:36px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">STEP 3</p>
+<h3 style="font-size:40px;font-weight:600;line-height:1.25">화면으로 확인</h3>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">AGV 상태와 배차 결과를 한 화면에서 봅니다</p>
+</div>
+</div>
+<p style="font-size:40px;font-weight:600;line-height:1.3">예측 결과를 정비 일정뿐 아니라 배차에도 씁니다</p>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#5B6B7B">고장 징후를 반영한 AGV 배차</p>
+<p style="font-size:24px;color:#5B6B7B">6 / 9</p>
+</div>
+</section>
+<section id="data" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">03 해결</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.15">데이터와 사전 확인</h2>
+</div>
+<hr style="border-top:1px solid #D5DCE4">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:20px">
+<table style="font-size:30px;width:100%;color:#3B4A5A;background:#FCFDFE">
+<tr style="background:#0B1F33"><th style="width:32%;text-align:left;color:#F2F5F8;font-weight:600">항목</th><th style="width:68%;text-align:left;color:#F2F5F8;font-weight:600">출처</th></tr>
+<tr><td>상태 데이터</td><td>AI Hub 이송장치 데이터, AGV 20대</td></tr>
+<tr><td>운반 요청과 배치</td><td>독일 KIT AGV 물류 흐름 데이터</td></tr>
+<tr><td>로봇 사양</td><td>MiR100 공식 사양서</td></tr>
+<tr><td>고장 복구 시간</td><td>문헌 값: 5분 (80%), 30분 (20%)</td></tr>
+</table>
+<p style="font-size:24px;line-height:1.5;color:#5B6B7B">상태가 나빠지는 속도는 공개 수치가 없어 가정값으로 두고 여러 값으로 확인합니다</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF">AGV 1대 샘플 2,527세트 분석</p>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0B1F33;padding:28px 32px;border-radius:12px">
+<p style="font-size:96px;font-weight:600;line-height:1.1;color:#F2F5F8">146~201초</p>
+<p style="font-size:30px;line-height:1.4;color:#BFCBD8">위험 단계보다 앞서 이상을 감지</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0B1F33;padding:28px 32px;border-radius:12px">
+<p style="font-size:96px;font-weight:600;line-height:1.1;color:#F2F5F8">94%</p>
+<p style="font-size:30px;line-height:1.4;color:#BFCBD8">4단계 분류 정확도</p>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#5B6B7B">샘플 기준 수치. 전체 데이터로 다시 확인할 예정</p>
+<p style="font-size:24px;color:#5B6B7B">7 / 9</p>
+</div>
+</section>
+<section id="plan" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">03 해결</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.15">실험 계획</h2>
+</div>
+<hr style="border-top:1px solid #D5DCE4">
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:3;display:flex;flex-direction:column;gap:20px">
+<table style="font-size:30px;width:100%;color:#3B4A5A;background:#FCFDFE">
+<tr style="background:#0B1F33"><th style="width:40%;text-align:left;color:#F2F5F8;font-weight:600">배차 규칙</th><th style="width:60%;text-align:left;color:#F2F5F8;font-weight:600">방식</th></tr>
+<tr><td>가까운 AGV 우선</td><td>거리만 보고 배정 (기준)</td></tr>
+<tr><td>경고 AGV 제외</td><td>경고 단계부터 작업에서 제외</td></tr>
+<tr><td>상태 반영 순위 조정</td><td>위험할수록 배정 순위를 낮춤</td></tr>
+</table>
+<p style="font-size:30px;line-height:1.4;color:#3B4A5A">AGV 20대 규모의 시뮬레이션에서 같은 작업량으로 비교합니다</p>
+</div>
+<div style="flex:2;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px;background:#FCFDFE;padding:28px 32px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF">평가 지표</p>
+<ul style="font-size:30px;line-height:1.5;color:#3B4A5A">
+<li>운반 지연</li>
+<li>운행 중 고장 횟수</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FCFDFE;padding:28px 32px;border:1px solid #D5DCE4;border-radius:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF">남은 확인</p>
+<ul style="font-size:30px;line-height:1.5;color:#3B4A5A">
+<li>상태 데이터는 시험 설비에서 수집</li>
+<li>전체 데이터로 다시 확인 필요</li>
+<li>대회의 데이터 지정 여부 확인 중</li>
+</ul>
+</div>
+</div>
+</div>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#5B6B7B">고장 징후를 반영한 AGV 배차</p>
+<p style="font-size:24px;color:#5B6B7B">8 / 9</p>
+</div>
+</section>
+<section id="sim" data-transition="fade" style="background:#F7F8FA;color:#0B1F33;font-family:'IBM Plex Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#1F5FBF;letter-spacing:2px">03 해결</p>
+<h2 style="font-size:60px;font-weight:600;line-height:1.15">관제 화면 시안</h2>
+</div>
+<hr style="border-top:1px solid #D5DCE4">
+<iframe title="관제 화면 시안" sandbox="allow-scripts" style="position:absolute;left:128px;top:312px;width:1664px;height:580px;border:0" srcdoc="&lt;!doctype html&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;style&gt;html,body{margin:0;overflow:hidden}body{font:24px/1.3 -apple-system,&#x27;Apple SD Gothic Neo&#x27;,&#x27;Malgun Gothic&#x27;,sans-serif;color:#0B1F33}#w{width:1664px;height:580px;display:flex;gap:24px;transform-origin:0 0}canvas{background:#EDF1F5;border-radius:12px;flex:none}#p{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}.b{background:#fff;border:1px solid #D5DCE4;border-radius:12px;padding:14px 20px}#m{font-weight:700;color:#1F5FBF}.k,.r{display:flex;justify-content:space-between}.r{padding:6px 0;border-top:1px solid #E3E8EE}.w{color:#B45309;font-weight:700}.g{color:#5B6B7B}h4{margin:0 0 4px;font-size:24px}&lt;/style&gt;&lt;div id=&quot;w&quot;&gt;&lt;canvas id=&quot;c&quot; width=&quot;1080&quot; height=&quot;580&quot;&gt;&lt;/canvas&gt;&lt;div id=&quot;p&quot;&gt;&lt;div class=&quot;b&quot;&gt;&lt;div id=&quot;m&quot;&gt;&lt;/div&gt;&lt;div class=&quot;k&quot;&gt;&lt;span&gt;운반 완료 &lt;b id=&quot;d&quot;&gt;0&lt;/b&gt;&lt;/span&gt;&lt;span&gt;운행 중 고장 &lt;b id=&quot;f&quot;&gt;0&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;b&quot; style=&quot;flex:1&quot;&gt;&lt;h4&gt;배차 순서&lt;/h4&gt;&lt;div id=&quot;l&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;script&gt;const W=1080,H=580,CX=[80,310,540,770,1000],CY=[70,250,430],SP=150,MB={x:1000,y:505},COL=[&#x27;#1F5FBF&#x27;,&#x27;#C9A227&#x27;,&#x27;#E07B00&#x27;,&#x27;#C62828&#x27;],NM=[&#x27;정상&#x27;,&#x27;관심&#x27;,&#x27;경고&#x27;,&#x27;위험&#x27;],F=&quot;-apple-system,&#x27;Apple SD Gothic Neo&#x27;,&#x27;Malgun Gothic&#x27;,sans-serif&quot;;
+const $=i=&gt;document.getElementById(i),g=$(&#x27;c&#x27;).getContext(&#x27;2d&#x27;);
+let A=[],Q=[],tid=0,mode=1,t=0,done=0,fail=0,sp=0,dp=0,ui=0,last=0;
+const R=n=&gt;Math.floor(Math.random()*n);
+for(let i=0;i&lt;8;i++)A.push({id:i+1,x:CX[i%5],y:CY[i%3],st:0,path:[],task:null,load:0,brk:0,mt:0,wait:0,go:0,fx:0});
+function add(a,x,y,act){let p=a.path.length?a.path[a.path.length-1]:a;if(p.y&gt;430){a.path.push({x:p.x,y:430});p={x:p.x,y:430}}if(p.x!=x)a.path.push({x:x,y:p.y});a.path.push({x:x,y:y,act:act})}
+function reset(){mode=1-mode;t=0;done=0;fail=0;Q=[];for(const a of A){a.task=null;a.path=a.path.slice(0,1).map(p=&gt;({x:p.x,y:p.y}));a.load=0;a.st=0;a.brk=0;a.mt=0;a.go=0;a.fx=0;a.wait=0}}
+function step(dt){t+=dt;if(t&gt;26)reset();const s=A[4];
+if(!s.fx){if(t&gt;4&amp;&amp;s.st&lt;1)s.st=1;if(t&gt;9&amp;&amp;s.st&lt;2)s.st=2;
+if(mode==0&amp;&amp;t&gt;15&amp;&amp;s.st&lt;3){s.st=3;s.brk=8;fail++;if(s.task){s.task.a=null;s.task=null}s.load=0;s.path=s.path.slice(0,1).map(p=&gt;({x:p.x,y:p.y}))}
+if(mode==1&amp;&amp;s.st==2&amp;&amp;!s.go&amp;&amp;!s.task&amp;&amp;!s.path.length){s.go=1;add(s,MB.x,430);s.path.push({x:MB.x,y:MB.y,act:&#x27;M&#x27;})}}
+sp+=dt;if(sp&gt;1.5){sp=0;if(Q.filter(q=&gt;!q.a).length&lt;5){let f=R(15),e=R(15);if(e==f)e=(e+7)%15;Q.push({id:++tid,fx:CX[f%5],fy:CY[Math.floor(f/5)],tx:CX[e%5],ty:CY[Math.floor(e/5)],a:null})}}
+dp+=dt;if(dp&gt;.4){dp=0;const q=Q.find(q=&gt;!q.a);if(q){let b=null,bd=1e9;for(const a of A){if(a.task||a.path.length||a.brk&gt;0||a.mt&gt;0||a.go||(mode&amp;&amp;a.st&gt;1))continue;const d=Math.abs(a.x-q.fx)+Math.abs(a.y-q.fy)+(mode&amp;&amp;a.st==1?600:0);if(d&lt;bd){bd=d;b=a}}if(b){q.a=b;b.task=q;add(b,q.fx,q.fy,&#x27;P&#x27;);add(b,q.tx,q.ty,&#x27;D&#x27;)}}}
+for(const a of A){if(a.brk&gt;0){a.brk-=dt;if(a.brk&lt;=0){a.st=0;a.fx=1}continue}if(a.mt&gt;0){a.mt-=dt;if(a.mt&lt;=0){a.st=0;a.fx=1;a.go=0}continue}if(a.wait&gt;0){a.wait-=dt;continue}
+let m=SP*dt;while(m&gt;0&amp;&amp;a.path.length){const p=a.path[0],dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy);if(d&lt;=m){a.x=p.x;a.y=p.y;m-=d;a.path.shift();if(p.act==&#x27;P&#x27;){a.load=1;a.wait=.4;break}if(p.act==&#x27;D&#x27;){a.load=0;a.wait=.4;done++;Q=Q.filter(q=&gt;q!=a.task);a.task=null;break}if(p.act==&#x27;M&#x27;){a.mt=6;break}}else{a.x+=dx/d*m;a.y+=dy/d*m;m=0}}}}
+function rr(x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function draw(){g.clearRect(0,0,W,H);g.lineCap=&#x27;round&#x27;;g.strokeStyle=&#x27;#D5DCE4&#x27;;g.lineWidth=16;g.beginPath();for(const y of CY){g.moveTo(CX[0],y);g.lineTo(CX[4],y)}for(const x of CX){g.moveTo(x,CY[0]);g.lineTo(x,CY[2])}g.moveTo(MB.x,430);g.lineTo(MB.x,MB.y);g.stroke();
+rr(820,475,240,60,10);g.fillStyle=&#x27;#fff&#x27;;g.fill();g.lineWidth=2;g.strokeStyle=&#x27;#9AA9B9&#x27;;g.stroke();
+g.font=&#x27;600 24px &#x27;+F;g.textBaseline=&#x27;middle&#x27;;g.textAlign=&#x27;left&#x27;;g.fillStyle=&#x27;#3B4A5A&#x27;;g.fillText(&#x27;정비 구역&#x27;,836,506);
+g.fillStyle=&#x27;#9AA9B9&#x27;;for(const x of CX)for(const y of CY)g.fillRect(x-6,y-6,12,12);
+for(const q of Q)if(q.a){g.lineWidth=3;g.strokeStyle=&#x27;#0B1F33&#x27;;g.strokeRect(q.tx-11,q.ty-38,22,22);if(!q.a.load){g.fillStyle=&#x27;#0B1F33&#x27;;g.fillRect(q.fx-10,q.fy-37,20,20)}}
+for(const a of A){g.beginPath();g.arc(a.x,a.y,24,0,7);g.fillStyle=COL[a.st];g.fill();g.textAlign=&#x27;center&#x27;;
+if(a.brk&gt;0||a.mt&gt;0){g.lineWidth=4;g.strokeStyle=&#x27;#0B1F33&#x27;;g.stroke();g.fillStyle=a.brk&gt;0?&#x27;#C62828&#x27;:&#x27;#3B4A5A&#x27;;g.fillText(a.brk&gt;0?&#x27;정지&#x27;:&#x27;정비 중&#x27;,a.x,a.y-44)}
+g.fillStyle=a.st==1||a.st==2?&#x27;#0B1F33&#x27;:&#x27;#fff&#x27;;g.fillText(a.id,a.x,a.y+1);
+if(a.load){g.fillStyle=&#x27;#0B1F33&#x27;;g.fillRect(a.x+12,a.y-36,18,18);g.lineWidth=2;g.strokeStyle=&#x27;#fff&#x27;;g.strokeRect(a.x+12,a.y-36,18,18)}}
+g.textAlign=&#x27;left&#x27;;for(let i=0;i&lt;4;i++){g.beginPath();g.arc(40+i*140,548,10,0,7);g.fillStyle=COL[i];g.fill();g.fillStyle=&#x27;#3B4A5A&#x27;;g.fillText(NM[i],58+i*140,549)}}
+function uiU(){const s=A[4];$(&#x27;m&#x27;).textContent=&#x27;배차 방식: &#x27;+(mode?&#x27;상태 반영 (경고 AGV 제외)&#x27;:&#x27;가까운 AGV 우선 (기준)&#x27;);$(&#x27;d&#x27;).textContent=done;$(&#x27;f&#x27;).textContent=fail;
+let h=&#x27;&#x27;;if(s.brk&gt;0)h+=&#x27;&lt;div class=&quot;r w&quot;&gt;&lt;span&gt;AGV 5 정지&lt;/span&gt;&lt;span&gt;복구 중&lt;/span&gt;&lt;/div&gt;&#x27;;else if(s.go||s.mt&gt;0)h+=&#x27;&lt;div class=&quot;r w&quot;&gt;&lt;span&gt;AGV 5 경고&lt;/span&gt;&lt;span&gt;정비 구역으로&lt;/span&gt;&lt;/div&gt;&#x27;;else if(s.st&gt;0)h+=&#x27;&lt;div class=&quot;r w&quot;&gt;&lt;span&gt;AGV 5 &#x27;+NM[s.st]+&#x27;&lt;/span&gt;&lt;span&gt;&#x27;+(mode?(s.st&gt;1?&#x27;배정 제외&#x27;:&#x27;후순위&#x27;):&#x27;계속 배정&#x27;)+&#x27;&lt;/span&gt;&lt;/div&gt;&#x27;;
+for(const q of Q.slice(0,7))h+=&#x27;&lt;div class=&quot;r&quot;&gt;&lt;span&gt;작업 &#x27;+q.id+&#x27;&lt;/span&gt;&lt;span&#x27;+(q.a?&#x27;&gt;AGV &#x27;+q.a.id:&#x27; class=&quot;g&quot;&gt;대기&#x27;)+&#x27;&lt;/span&gt;&lt;/div&gt;&#x27;;$(&#x27;l&#x27;).innerHTML=h}
+function fr(n){const dt=Math.min(.05,(n-last)/1000||0);last=n;step(dt);draw();ui+=dt;if(ui&gt;.2){ui=0;uiU()}requestAnimationFrame(fr)}
+function fit(){$(&#x27;w&#x27;).style.transform=&#x27;scale(&#x27;+innerWidth/1664+&#x27;)&#x27;}
+addEventListener(&#x27;resize&#x27;,fit);fit();reset();requestAnimationFrame(fr);&lt;/script&gt;"></iframe>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;flex-direction:row;justify-content:space-between">
+<p style="font-size:24px;color:#5B6B7B">동작을 보여 주는 예시이며 실험 결과가 아닙니다</p>
+<p style="font-size:24px;color:#5B6B7B">9 / 9</p>
+</div>
+</section>
+</div>
+<div id="nav"></div>
+<script>
+const st=document.getElementById('stage'),ss=[...st.querySelectorAll('section')],nav=document.getElementById('nav');
+for(const i of st.querySelectorAll('x-icon[name=Check]'))i.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg>';
+let cur=0;
+function fit(){const k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='scale('+k+') translate(-50%,-50%)'}
+function show(n){cur=Math.max(0,Math.min(ss.length-1,n));ss.forEach((s,i)=>s.hidden=i!==cur);nav.textContent=(cur+1)+' / '+ss.length;history.replaceState(null,'','#'+(cur+1))}
+addEventListener('resize',fit);
+addEventListener('keydown',e=>{const k=e.key;if(k==='ArrowRight'||k==='PageDown'||k===' '||k==='Enter'){e.preventDefault();show(cur+1)}else if(k==='ArrowLeft'||k==='PageUp'||k==='Backspace'){e.preventDefault();show(cur-1)}else if(k==='Home')show(0);else if(k==='End')show(ss.length-1);else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}});
+addEventListener('click',e=>{show(cur+(e.clientX<innerWidth/3?-1:1))});
+let tx=null;addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(d)>40)show(cur+(d<0?1:-1))},{passive:true});
+addEventListener('hashchange',()=>{const n=(parseInt(location.hash.slice(1))||1)-1;if(n!==cur)show(n)});
+fit();show((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>
